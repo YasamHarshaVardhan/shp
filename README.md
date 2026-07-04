@@ -1,41 +1,96 @@
-# 👵🏼 SilverCare AI: Proactive Senior Citizen Companion
+SilverCare AI: Proactive Senior Companion
 
-**A submission for the Kaggle AI Agents: Intensive Vibe Coding Capstone Project (Agents for Good Track)**
+SilverCare AI is an autonomous, voice-enabled assistant designed to help senior citizens manage their health independently. This project serves as a submission for the Kaggle "AI Agents: Intensive Vibe Coding Capstone" (Agents for Good track).
 
-SilverCare AI is a secure, proactive, and accessible multi-agent companion designed to help senior citizens live independently. It utilizes Google's Gemini 2.5 Flash model, Function Calling, and the Web Speech API to provide an intuitive voice-first interface for managing medications, appointments, and proactive health alerts.
+It is built using a secure Django backend, a local SQLite database for data privacy, and the Google Gemini API for intelligent conversation and task orchestration.
 
----
+Key Features
 
-## 🌟 Key Features
+Proactive Alerts: The system autonomously monitors medication and appointment schedules, providing voice-based alerts 5 minutes before medications and 1 hour before appointments.
 
-*   **🎙️ Voice-First Interface:** Utilizes the browser's native Web Speech API for seamless Speech-to-Text and Text-to-Speech interactions, eliminating the need for seniors to type.
-*   **🧠 Tool-Augmented LLM:** Powered by `gemini-2.5-flash`, the agent dynamically queries the SQLite database via strictly scoped Python functions to retrieve accurate medication schedules and upcoming appointments.
-*   **⏰ Proactive Audio Alerts:** A custom frontend polling mechanism checks the Django backend every 60 seconds, verbally alerting the senior exactly 5 minutes before a medication is due, and 1 hour before an appointment.
-*   **🔒 Multi-Tenant Data Privacy:** Built with strict user-scoping. The AI tools intercept the Django `request.user` session, mathematically guaranteeing that the LLM can only retrieve and discuss health records belonging to the currently authenticated user.
-*   **📱 Accessible UI:** Features a high-contrast, Bootstrap 5 responsive design with large typography, a prominent "Push to Talk" button, and a seamless Light/Dark mode toggle via CSS variables.
+Secure Agent Architecture: All AI tools are strictly scoped to the authenticated user. The agent can only access health data belonging to the logged-in individual, ensuring multi-tenant isolation.
 
----
+Custom Interface: Built with a custom, high-contrast, accessibility-focused HTML/CSS frontend, designed to be simple and easy for older adults to navigate.
 
-## 🏗️ Architecture & Course Concepts Applied
+Dual-Input Interaction: Supports both natural voice conversation (via Web Speech API) and manual input for users who prefer typing or need to add records manually.
 
-This project demonstrates several key concepts from the Kaggle AI Agents Intensive:
+Installation and Setup
 
-1.  **Agent Skills (Tool Use):** The Orchestrator Agent utilizes custom Python functions (`get_daily_medications`, `get_upcoming_appointments`) mapped to the Gemini API to execute real-time database lookups rather than relying on static training data.
-2.  **Security Features:** Implements strict Data Privacy. All views are protected by `@login_required`, and database queries passed to the LLM are hardcoded to filter by `user=request.user`, preventing cross-tenant data hallucination or leakage.
-3.  **Antigravity IDE:** The entire full-stack architecture was scaffolded, iterated, and refined using the Antigravity Vibe Coding environment.
+1. Prerequisites
 
----
+Python 3.10 or higher installed.
 
-## 🚀 Quickstart: How to Run Locally
+A free Google Gemini API Key (get it at Google AI Studio).
 
-Follow these steps to run SilverCare AI on your local machine for judging.
+2. Environment Setup
 
-### 1. Prerequisites
-*   Python 3.10+
-*   A Google Gemini API Key (Get one from [Google AI Studio](https://aistudio.google.com/))
+Clone this repository and set up your virtual environment:
 
-### 2. Installation
-Clone the repository and navigate into the project folder:
-```bash
-git clone [https://github.com/yourusername/silvercare-ai.git](https://github.com/yourusername/silvercare-ai.git)
+git clone https://github.com/yourusername/silvercare-ai.git
 cd silvercare-ai
+
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# Windows:
+venv\Scripts\activate
+# Mac/Linux:
+source venv/bin/activate
+
+# Install dependencies
+pip install django google-genai python-dotenv
+
+
+3. API Configuration (CRITICAL)
+
+For security, your Gemini API key must be stored in a local .env file.
+
+In your project root directory (where manage.py is located), create a new file named .env.
+
+Open the file and paste your key in this format:
+
+GEMINI_API_KEY=your_actual_api_key_here
+
+
+Save the file. The project will automatically load this key when running.
+
+4. Database Setup
+
+Apply the migrations to initialize your local SQLite database:
+
+python manage.py makemigrations
+python manage.py migrate
+
+
+5. Running the Server
+
+Start the application:
+
+python manage.py runserver
+
+
+Open your browser to http://127.0.0.1:8000. When prompted, click "Allow" for microphone access to enable voice features.
+
+Testing for Judges
+
+To verify the proactive alerting and multi-tenant security:
+
+Register: Create an account to isolate your data.
+
+Add Data: Use the "Manage Records" dashboard to add a medication scheduled 2 minutes in the future.
+
+Verify Proactive Alerts: Keep the "Companion" tab open. When the time arrives, the browser will verbally alert you to take your medication.
+
+Security Check: Log out and log in with a different account. You will see that your medications and appointments are completely hidden and isolated, proving the agent's scoped tool permissions.
+
+Developed for the Kaggle AI Agents Intensive Capstone | July 2026
+
+
+***
+
+### Your Next Step
+
+With the README done, your repository is ready for judges to clone. 
+
+Would you like me to start drafting the **2,500-word Kaggle Writeup** now? I can structure it exactly according to the 30-point "Pitch" and 20-point "Writeup" rubrics so you have a massive head start!
